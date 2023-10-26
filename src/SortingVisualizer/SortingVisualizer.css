@@ -1,0 +1,16 @@
+.arrayContainer {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.arrayBar {
+  display: inline-block;
+  background-color: blue;
+  margin: 0 1px;
+  flex-grow: 1;
+  display: flex;
+}
