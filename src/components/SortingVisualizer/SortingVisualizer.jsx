@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./SortingVisualizer.css";
-import useWindowDimensions from "./hooks/useWindowDimensions";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
