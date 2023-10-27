@@ -45,3 +45,19 @@ export function bubbleSort(array) {
 
   return animations;
 }
+
+export function insertionSort(array) {
+  const animations = [];
+  const newArray = [...array];
+
+  for (let i = 0; i < newArray.length - 1; ++i) {
+    let j = i;
+    while (j >= 0 && newArray[j] > newArray[j + 1]) {
+      swap(newArray, j, j + 1);
+      animations.push([j, j + 1, true]);
+      j--;
+    }
+  }
+
+  return animations;
+}

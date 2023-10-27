@@ -5,13 +5,14 @@ import {
   swap,
   selectionSort,
   bubbleSort,
+  insertionSort,
 } from "../../sortingAlgorithms/sortingAlgorithms";
 import { pause } from "../../helper";
 
 function SortingVisualizer() {
   const [array, setArray] = useState([]);
   const { height } = useWindowDimensions();
-  const [sortAlgorithm, setSortAlgorithm] = useState("bubbleSort");
+  const [sortAlgorithm, setSortAlgorithm] = useState("insertionSort");
   const [animationFinished, setAnimationFinished] = useState(true);
 
   const generateNewArray = useCallback(
@@ -34,6 +35,7 @@ function SortingVisualizer() {
   function getAnimations() {
     if (sortAlgorithm === "selectionSort") return selectionSort(array);
     if (sortAlgorithm === "bubbleSort") return bubbleSort(array);
+    if (sortAlgorithm === "insertionSort") return insertionSort(array);
   }
 
   async function sortHelper() {
@@ -47,8 +49,8 @@ function SortingVisualizer() {
       setTimeout(async () => {
         const arrayBars = document.getElementsByClassName("arrayBar");
         if (!isSwap) {
-          arrayBars[animation[0]].style.backgroundColor = "red";
-          arrayBars[animation[1]].style.backgroundColor = "red";
+          arrayBars[a].style.backgroundColor = "red";
+          arrayBars[b].style.backgroundColor = "red";
         }
 
         setArray((prevArray) => {
@@ -60,12 +62,9 @@ function SortingVisualizer() {
         });
 
         await pause(100);
-        /*if (
-          index + 1 < animations.length &&
-          animations[index + 1][0] !== animation[0]
-        )*/
-        arrayBars[animation[0]].style.backgroundColor = "blue";
-        arrayBars[animation[1]].style.backgroundColor = "blue";
+
+        arrayBars[a].style.backgroundColor = "blue";
+        arrayBars[b].style.backgroundColor = "blue";
       }, index * 100);
     });
 
@@ -73,15 +72,12 @@ function SortingVisualizer() {
   }
 
   useEffect(() => {
-    generateNewArray(10);
+    generateNewArray(5);
   }, [generateNewArray]);
 
   return (
     <>
-      <button
-        onClick={() => generateNewArray(10)}
-        disabled={!animationFinished}
-      >
+      <button onClick={() => generateNewArray(5)} disabled={!animationFinished}>
         Generate new array
       </button>
       <button onClick={() => sortHelper()} disabled={!animationFinished}>
