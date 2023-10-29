@@ -61,3 +61,37 @@ export function insertionSort(array) {
 
   return animations;
 }
+
+export function quickSortAnimations(array) {
+  const animations = [];
+  const auxArray = [...array];
+  quickSortHelper(auxArray, 0, auxArray.length - 1, animations);
+  return animations;
+}
+
+function quickSortHelper(array, startIdx, endIdx, animations) {
+  if (startIdx < endIdx) {
+    const pivotIdx = partition(array, startIdx, endIdx, animations);
+    quickSortHelper(array, startIdx, pivotIdx - 1, animations);
+    quickSortHelper(array, pivotIdx + 1, endIdx, animations);
+  }
+}
+
+function partition(array, startIdx, endIdx, animations) {
+  const pivot = array[endIdx];
+  let i = startIdx - 1;
+
+  for (let j = startIdx; j <= endIdx - 1; j++) {
+    animations.push([j, endIdx, false]); // Indica un confronto
+    if (array[j] < pivot) {
+      i++;
+      animations.push([i, j, true]); // Indica uno swap
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  animations.push([i + 1, endIdx, true]); // Indica uno swap
+  [array[i + 1], array[endIdx]] = [array[endIdx], array[i + 1]];
+
+  return i + 1;
+}

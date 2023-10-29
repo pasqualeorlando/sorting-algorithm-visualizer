@@ -9,10 +9,16 @@ import {
   bubbleSort,
   selectionSort,
   insertionSort,
+  quickSortAnimations,
 } from "./sortingAlgorithms/sortingAlgorithms";
 
 function App() {
-  const ALGORITHMS = ["Bubble Sort", "Insertion Sort", "Selection Sort"];
+  const ALGORITHMS = [
+    "Bubble Sort",
+    "Insertion Sort",
+    "Selection Sort",
+    "Quick Sort",
+  ];
 
   const [array, setArray] = useState([]);
   const [sortingAlgorithm, setSortingAlgorithm] = useState("Bubble Sort");
@@ -42,6 +48,8 @@ function App() {
     if (sortingAlgorithm === "Bubble Sort") setAnimations(bubbleSort(array));
     if (sortingAlgorithm === "Insertion Sort")
       setAnimations(insertionSort(array));
+    if (sortingAlgorithm === "Quick Sort")
+      setAnimations(quickSortAnimations(array));
   }
 
   return (
