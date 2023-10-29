@@ -1,53 +1,38 @@
-import React, { useCallback, useEffect, useState } from "react";
-import "./SortingVisualizer.css";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
-import {
-  swap,
-  selectionSort,
-  bubbleSort,
-  insertionSort,
-} from "../../sortingAlgorithms/sortingAlgorithms";
+import React, { useCallback, useEffect } from "react";
+import "../../styles/SortingVisualizer.css";
+import { swap } from "../../sortingAlgorithms/sortingAlgorithms";
 import { pause } from "../../helper";
 
-function SortingVisualizer() {
-  const [array, setArray] = useState([]);
-  const { height } = useWindowDimensions();
-  const [sortAlgorithm, setSortAlgorithm] = useState("insertionSort");
-  const [animationFinished, setAnimationFinished] = useState(true);
+function SortingVisualizer(props) {
+  const {
+    array,
+    setArray,
+    speed,
+    animationFinished,
+    setAnimationFinished,
+    animations,
+  } = props;
 
-  const generateNewArray = useCallback(
-    (length) => {
-      const newArray = [];
+  const sortingFinishedAnimation = useCallback(async () => {
+    const arrayBars = document.getElementsByClassName("arrayBar");
 
-      for (let i = 0; i < length; i++) {
-        newArray.push(generateRandomNumber(1, (height * 75) / 100));
-      }
+    for (let index = 0; index < arrayBars.length; index++) {
+      setTimeout(() => {
+        arrayBars[index].style.backgroundColor = "green";
+      }, index * speed);
+    }
+  }, []);
 
-      setArray(newArray);
-    },
-    [height]
-  );
+  const sortHelper = useCallback(async () => {
+    await pause(1000);
 
-  function generateRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  function getAnimations() {
-    if (sortAlgorithm === "selectionSort") return selectionSort(array);
-    if (sortAlgorithm === "bubbleSort") return bubbleSort(array);
-    if (sortAlgorithm === "insertionSort") return insertionSort(array);
-  }
-
-  async function sortHelper() {
-    const animations = getAnimations();
-
-    setAnimationFinished(false);
+    setAnimationFinished((animationFinished) => !animationFinished);
 
     animations.forEach((animation, index) => {
       const [a, b, isSwap] = animation;
+      const arrayBars = document.getElementsByClassName("arrayBar");
 
       setTimeout(async () => {
-        const arrayBars = document.getElementsByClassName("arrayBar");
         if (!isSwap) {
           arrayBars[a].style.backgroundColor = "red";
           arrayBars[b].style.backgroundColor = "red";
@@ -61,42 +46,47 @@ function SortingVisualizer() {
           return newArray;
         });
 
-        await pause(100);
+        await pause(speed);
 
-        arrayBars[a].style.backgroundColor = "blue";
-        arrayBars[b].style.backgroundColor = "blue";
-      }, index * 100);
+        if (index < animations?.length - 1 && animations[index + 1][0] !== a)
+          arrayBars[a].style.backgroundColor = "#7a5af5";
+        arrayBars[b].style.backgroundColor = "#7a5af5";
+      }, index * speed);
+
+      setTimeout(async () => {
+        await sortingFinishedAnimation();
+        setAnimationFinished((animationFinished) => !animationFinished);
+      }, animations.length * speed + 100);
     });
-
-    setAnimationFinished(true);
-  }
+  }, [animations, setArray, sortingFinishedAnimation]);
 
   useEffect(() => {
-    generateNewArray(5);
-  }, [generateNewArray]);
+    if (animations?.length !== 0) {
+      sortHelper();
+    }
+  }, [animations, sortHelper]);
+
+  useEffect(() => {
+    const arrayBars = document.getElementsByClassName("arrayBar");
+    for (let index = 0; index < arrayBars.length; index++) {
+      arrayBars[index].style.backgroundColor = "#7a5af5";
+    }
+  }, [array.length, speed]);
 
   return (
-    <>
-      <button onClick={() => generateNewArray(5)} disabled={!animationFinished}>
-        Generate new array
-      </button>
-      <button onClick={() => sortHelper()} disabled={!animationFinished}>
-        Sort
-      </button>
-      <div className="arrayContainer">
-        {array.map((element, idx) => {
-          return (
-            <div
-              key={idx}
-              className="arrayBar"
-              style={{
-                height: `${element}px`,
-              }}
-            ></div>
-          );
-        })}
-      </div>
-    </>
+    <div className="arrayContainer">
+      {array.map((element, idx) => {
+        return (
+          <div
+            key={idx}
+            className="arrayBar"
+            style={{
+              height: `${element}px`,
+            }}
+          ></div>
+        );
+      })}
+    </div>
   );
 }
 
