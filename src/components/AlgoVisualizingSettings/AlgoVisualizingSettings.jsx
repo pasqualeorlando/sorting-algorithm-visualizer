@@ -12,6 +12,7 @@ const AlgoVisualizingSettings = (props) => {
     setArrayLength,
     animationFinished,
     getAnimations,
+    generateNewArray,
   } = props;
 
   return (
@@ -76,6 +77,16 @@ const AlgoVisualizingSettings = (props) => {
           onClick={() => getAnimations()}
         >
           Start
+        </button>
+      </div>
+
+      <div>
+        <button
+          className="button"
+          disabled={!animationFinished}
+          onClick={() => generateNewArray()}
+        >
+          Generate new array
         </button>
       </div>
     </div>

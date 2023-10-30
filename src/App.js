@@ -65,6 +65,7 @@ function App() {
         setArrayLength={setArrayLength}
         animationFinished={animationFinished}
         getAnimations={getAnimations}
+        generateNewArray={() => setArray(generateNewArray(arrayLength, height))}
       ></AlgoVisualizingSettings>
       <SortingVisualizer
         array={array}

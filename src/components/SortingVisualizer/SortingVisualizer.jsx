@@ -15,18 +15,20 @@ function SortingVisualizer(props) {
 
   const sortingFinishedAnimation = useCallback(async () => {
     const arrayBars = document.getElementsByClassName("arrayBar");
-
     for (let index = 0; index < arrayBars.length; index++) {
       setTimeout(() => {
         arrayBars[index].style.backgroundColor = "green";
       }, index * speed);
     }
-  }, []);
+    setTimeout(() => {
+      setAnimationFinished(() => true);
+    }, arrayBars.length * speed);
+  }, [speed]);
 
   const sortHelper = useCallback(async () => {
     await pause(1000);
 
-    setAnimationFinished((animationFinished) => !animationFinished);
+    setAnimationFinished(() => false);
 
     animations.forEach((animation, index) => {
       const [a, b, isSwap] = animation;
@@ -55,10 +57,15 @@ function SortingVisualizer(props) {
 
       setTimeout(async () => {
         await sortingFinishedAnimation();
-        setAnimationFinished((animationFinished) => !animationFinished);
-      }, animations.length * speed + 100);
+      }, animations.length * speed);
     });
-  }, [animations, setArray, sortingFinishedAnimation]);
+  }, [
+    animations,
+    setArray,
+    sortingFinishedAnimation,
+    speed,
+    setAnimationFinished,
+  ]);
 
   useEffect(() => {
     if (animations?.length !== 0) {
@@ -68,10 +75,12 @@ function SortingVisualizer(props) {
 
   useEffect(() => {
     const arrayBars = document.getElementsByClassName("arrayBar");
-    for (let index = 0; index < arrayBars.length; index++) {
-      arrayBars[index].style.backgroundColor = "#7a5af5";
+    if (animationFinished) {
+      for (let index = 0; index < arrayBars.length; index++) {
+        arrayBars[index].style.backgroundColor = "#7a5af5";
+      }
     }
-  }, [array.length, speed]);
+  }, [array, speed]);
 
   return (
     <div className="arrayContainer">
