@@ -23,7 +23,7 @@ function SortingVisualizer(props) {
     setTimeout(() => {
       setAnimationFinished(() => true);
     }, arrayBars.length * speed);
-  }, [speed]);
+  }, [speed, setAnimationFinished]);
 
   const sortHelper = useCallback(async () => {
     await pause(1000);

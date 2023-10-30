@@ -36,7 +36,7 @@ function App() {
 
   useEffect(() => {
     setArray(generateNewArray(arrayLength, height));
-  }, []);
+  }, [height, arrayLength]);
 
   useEffect(() => {
     if (animationFinished) setAnimations([]);
