@@ -35,10 +35,10 @@ function SortingVisualizer(props) {
       const arrayBars = document.getElementsByClassName("arrayBar");
 
       setTimeout(async () => {
-        if (!isSwap) {
-          arrayBars[a].style.backgroundColor = "red";
-          arrayBars[b].style.backgroundColor = "red";
-        }
+        //if (!isSwap) {
+        arrayBars[a].style.backgroundColor = "red";
+        arrayBars[b].style.backgroundColor = "red";
+        //}
 
         setArray((prevArray) => {
           const newArray = [...prevArray];
@@ -52,7 +52,8 @@ function SortingVisualizer(props) {
 
         if (index < animations?.length - 1 && animations[index + 1][0] !== a)
           arrayBars[a].style.backgroundColor = "#7a5af5";
-        arrayBars[b].style.backgroundColor = "#7a5af5";
+        if (index < animations?.length - 1 && animations[index + 1][1] !== b)
+          arrayBars[b].style.backgroundColor = "#7a5af5";
       }, index * speed);
 
       setTimeout(async () => {

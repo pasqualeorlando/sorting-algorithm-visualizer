@@ -10,6 +10,7 @@ import {
   selectionSort,
   insertionSort,
   quickSortAnimations,
+  heapSort,
 } from "./sortingAlgorithms/sortingAlgorithms";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     "Insertion Sort",
     "Selection Sort",
     "Quick Sort",
+    "Heap Sort",
   ];
 
   const [array, setArray] = useState([]);
@@ -50,6 +52,7 @@ function App() {
       setAnimations(insertionSort(array));
     if (sortingAlgorithm === "Quick Sort")
       setAnimations(quickSortAnimations(array));
+    if (sortingAlgorithm === "Heap Sort") setAnimations(heapSort(array));
   }
 
   return (
