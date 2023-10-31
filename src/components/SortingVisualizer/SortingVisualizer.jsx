@@ -18,11 +18,11 @@ function SortingVisualizer(props) {
     for (let index = 0; index < arrayBars.length; index++) {
       setTimeout(() => {
         arrayBars[index].style.backgroundColor = "green";
-      }, index * speed);
+      }, index * (110 - speed));
     }
     setTimeout(() => {
       setAnimationFinished(() => true);
-    }, arrayBars.length * speed);
+    }, arrayBars.length * (110 - speed));
   }, [speed, setAnimationFinished]);
 
   const sortHelper = useCallback(async () => {
@@ -48,17 +48,17 @@ function SortingVisualizer(props) {
           return newArray;
         });
 
-        await pause(speed);
+        await pause(110 - speed);
 
         if (index < animations?.length - 1 && animations[index + 1][0] !== a)
           arrayBars[a].style.backgroundColor = "#7a5af5";
         if (index < animations?.length - 1 && animations[index + 1][1] !== b)
           arrayBars[b].style.backgroundColor = "#7a5af5";
-      }, index * speed);
+      }, index * (110 - speed));
 
       setTimeout(async () => {
         await sortingFinishedAnimation();
-      }, animations.length * speed);
+      }, animations.length * (110 - speed));
     });
   }, [
     animations,
